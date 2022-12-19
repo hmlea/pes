@@ -1,0 +1,79 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Photoelectron Spectroscopy
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+Photoelectron spectroscopy (PES) is an experimental method is an experimental method used to determine relative energies of electrons emitted from matter. This technique relies on the photoelectric effect, which is a phenomenon in which electrons are emitted when a material absorbs electromagnetic radiation.
+
+This PES simulation creates spectra that are similar to what would be produced from an actualy photoelectron spectroscopy experiment. The simulation uses R to do the calculations and create the visuals; the electron binding energies used in this simulation were taken from the [Lawrence Berkeley National Laboratory](https://xdb.lbl.gov/xdb-new.pdf) and the [University of Guelph](https://web.archive.org/web/20210613060125/http://www.chemistry.uoguelph.ca/educmat/atomdata/bindener/elecbind.htm).
+
+## Usage
+
+This PES simulation can simulate the spectra for elements through xenon. The simulation was condensed into a Shiny web application which can be run by downloading it on your machine, or by using the following code in RStudio:
+
+    shiny::runGitHub("hmlea/pes")
+
+This project utilizes a handful of functions that can be used on their own to create individual spectra as well. First the element binding energy data must be loaded with:
+
+    binding_energies = read.csv("binding_energies.csv")
+    el_names = read.csv("elements.csv")
+
+Then any the following function can be used to simulate the PES data of a given element:
+
+    data = simulate_PES(el.input)
+
+-   `el.input`   The name, symbol, or atomic number of an element up through xenon
+
+That data can then be visualized in a handful of ways. Spectra can be created with either a histogram-like or Gaussian-like visualization:
+
+    plot_PES(pes_data, x_low_limit=NULL, x_high_limit=NULL,
+             y_limit=NULL, plot_title=NULL)
+    plot_gaussian_PES(pes_data, std=0.04, x_interval=0.01,
+                      x_low_limit=NULL, x_high_limit=NULL,
+                      y_limit=NULL, plot_title=NULL)
+
+-   `pes_data`   The data generated with `simulate_PES()`
+-   `x_low_limit`   The lower bound for the x axis
+-   `x_high_limit`   The upper bound for the x axis
+-   `y_limit`   The upper bound for the y axis
+-   `plot_title`   The title displayed above the plot
+-   `std`   The standard deviation used to created the Gaussian peaks; this affects the width of the peaks
+-   `x_interval`   The increment along the x axis while calculation the Gaussian peaks
+
+A table of the electron binding energies and electron counts can also be created and displayed with the following function:
+
+    create_table(pes_data, display_console=TRUE)
+
+-   `pes_data`   The data generated with `simulate_PES()`
+-   `display_console`   Determines if the table will be printed to the console
+
+## To Do
+
+In the future, I would like to:
+
+-   Add data for the remaining elements
+-   Rework and improve the Shiny front and back-end
+-   Improve the functionality of the Gaussian-like plots
+
+## References
+
+1.    University of Guelph 1997, [Binding Energies of Electrons
+in Atoms from H (Z=1) to Lw (Z=103)](http://www.chemistry.uoguelph.ca/educmat/atomdata/bindener/elecbind.htm) ([Wayback Machine](https://web.archive.org/web/20210613060125/http://www.chemistry.uoguelph.ca/educmat/atomdata/bindener/elecbind.htm))
+2.    Lawrence Berkeley National Laboratory 2009, [X-Ray Data Booklet](https://xdb.lbl.gov/xdb-new.pdf)
+
