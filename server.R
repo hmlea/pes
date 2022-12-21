@@ -40,7 +40,7 @@ shinyServer(function(input, output, session){
   
   # renders the output table of electron energies
   output$detail = renderTable({
-    create_table(pes_data = spectrum(), console_table = FALSE)
+    create_table(pes_data = spectrum(), display_console = FALSE)
   })
   
   # output function to display the avee
